@@ -1,18 +1,14 @@
 import { check } from 'k6';
 
-// Function to validate the login API response
+// Validate the login response from the API.
+// Returns true when all checks pass; otherwise false. Use this in tests
+// to assert that the login succeeded and returned content.
 export function validateLoginResponse(response) {
-
-  // Perform checks (assertions) on the response
-  // check() returns true if ALL conditions pass, otherwise false
   return check(response, {
-
-    // Validate that the HTTP status code is 200 (successful request)
+    // HTTP 200 indicates a successful login request
     'status is 200': (r) => r.status === 200,
 
-    // Validate that the response body is not empty
-    // Ensures API is returning actual data
+    // Response body should not be empty; this helps surface malformed responses
     'body is not empty': (r) => r.body && r.body.length > 0,
-
   });
 }

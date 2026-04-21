@@ -12,16 +12,19 @@ import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporte
 export const options = {
   vus: TEST_CONFIG.vus,          // Number of virtual users
   duration: TEST_CONFIG.duration, // Total test duration
+  thresholds: TEST_CONFIG.thresholds, // Performance thresholds (from config)
 };
 
 
 // Main test function (executed by each virtual user)
 export default function () {
 
-  // Call login API using reusable request function
+  // Call login API using reusable request function. This returns the raw
+  // k6 response which may contain the authentication token in JSON.
   const response = loginRequest(PAYLOADS.login);
 
-  // Validate response using reusable checks
+  // Validate response using reusable checks. If this check fails the
+  // subsequent token extraction may also fail, so keeping assertions helps.
   validateLoginResponse(response);
 
   // Pause between iterations to simulate real user behavior
