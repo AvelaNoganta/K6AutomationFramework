@@ -23,6 +23,9 @@ export default function () {
   // k6 response which may contain the authentication token in JSON.
   const response = loginRequest(PAYLOADS.login);
 
+  console.log(`Response status: ${response}`);
+  console.log(`Response body: ${response.body}`);
+
   // Validate response using reusable checks. If this check fails the
   // subsequent token extraction may also fail, so keeping assertions helps.
   validateLoginResponse(response);
